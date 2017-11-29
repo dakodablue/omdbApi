@@ -3,6 +3,7 @@
 
 <head>
   <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Favorite Movies</title>
 <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
   <style type="text/css">
@@ -47,10 +48,20 @@
 <body>
 
   <div class="container">
-    <h1>Movie Search</h1>
-
+    <h1>omdbApp</h1>
+<div id="tabs">
+  <ul>
+    <li><a href="#tabs-1">Demo Flix</a></li>
+    <li><a href="#tabs-2">User Pix</a></li>
+  </ul>
+  <div id="tabs-1">
+  <div id="buttons-view"></div>
+  </div>
+  <div id="tabs-2">
+  <div id="buttons-view2"></div>
+  </div>
+</div>
     <!-- Rendered buttons will get dumped Here  -->
-    <div id="buttons-view"></div>
     <hr>
     <form id="movie-form">
       <label for="movie-input">Add a Movie Bro</label>
@@ -65,9 +76,15 @@
     <!-- Movies will get dumped here -->
     <div id="movies-view"></div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+      <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script>
+  $( function() {
+    $( "#tabs" ).tabs();
+  } );
+  </script>
     <script type="text/javascript">
       // Initial array of movies
-      var movies = ["Suspiria", "Ms. 45", "Black Caesar", "Kids", "True Romance", "The Toxic Avenger", "Dawn of the Dead", "Badlands", "Holy Mountain", "Delta Force 5", "The Exterminator", "CryBaby", "DeathWish 4", "Coffee and Cigarettes"];
+      var movies = ["Suspiria", "Ms. 45", "Black Caesar", "Kids", "True Romance", "The Toxic Avenger", "Dawn of the Dead", "Badlands", "El Topo", "Delta Force 5", "The Exterminator", "From Harlem With Hell", "Death Wish 4", "Coffee and Cigarettes", "Dead Man Walking", "Juice", "Bamboozled", "The Jerk", "Manhunter", "Style Wars", "12 O'Clock Boys"];
 
       // displayMovieInfo function re-renders the HTML to display the appropriate content
       function displayMovieInfo() {
@@ -82,9 +99,9 @@
         }).done(function(data) {
           console.log(data);
           var string = []
+          string += "<img src='" + data.Poster + "'/>";
           string += "<h2>" + data.Awards + "</h2>";
-          string += "<img src='" + data.Poster + "'/><p>";
-          string += data.Title + " | Rated " +  data.Rated + " | ";
+          string += "<p>" + data.Title + " | Rated " +  data.Rated + " | ";
           string += data.Runtime + '<br>' + data.Genre;
           string += "<br />Released on " + data.Released;
           string += "<hr>Directed by " + data.Director;
@@ -109,16 +126,17 @@
 
       // Function for displaying movie data
       function renderButtons() {
-
+        console.log(movies.slice(-1).pop())
         // Deletes the movies prior to adding new movies
         // (this is necessary otherwise you will have repeat buttons)
         $("#buttons-view").empty();
-
         // Loops through the array of movies
         for (var i = 0; i < movies.length; i++) {
-
+          console.log(movies);
           // Then dynamicaly generates buttons for each movie in the array
           // This code $("<button>") is all jQuery needs to create the beginning and end tag. (<button></button>)
+          
+        
           var a = $("<button>");
           // Adds a class of movie to our button
           a.addClass("movie");
@@ -128,8 +146,8 @@
           a.text(movies[i]);
           // Added the button to the buttons-view div
           $("#buttons-view").append(a);
+          }
         }
-      }
 
       // This function handles events where the add movie button is clicked
       $("#add-movie").on("click", function(event) {
@@ -141,8 +159,11 @@
         movies.push(movie);
 
         // Calling renderButtons which handles the processing of our movie array
-        renderButtons();
-
+        renderButtons()
+        var demoButtons = $('.movie').slice(item => {
+          item.substr(item.indexOf('.'));
+        });
+        console.log(demoButtons);
       });
 
       // Adding click event listeners to all elements with a class of "movie"
